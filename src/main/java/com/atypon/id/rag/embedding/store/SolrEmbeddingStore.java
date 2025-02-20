@@ -154,7 +154,7 @@ public class SolrEmbeddingStore implements EmbeddingStore<TextSegment> {
         private String collectionName;
 
         public SolrEmbeddingStore build() {
-            SolrClient solrClient = new CloudSolrClient.Builder(zkHosts, Optional. of("/id-solr-arrs")).build();
+            SolrClient solrClient = new CloudSolrClient.Builder(zkHosts, Optional.of(zkChroot)).build();
             return new SolrEmbeddingStore(solrClient, collectionName);
         }
 

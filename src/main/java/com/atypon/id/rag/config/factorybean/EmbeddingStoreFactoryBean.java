@@ -23,10 +23,11 @@ public class EmbeddingStoreFactoryBean implements FactoryBean<EmbeddingStore> {
         String storeType = env.getProperty("embedding.store.type");
         if ("memory".equalsIgnoreCase(storeType)) {
             return new InMemoryEmbeddingStore<>();
-        } else if("solr".equalsIgnoreCase(storeType)){
+        } else if ("solr".equalsIgnoreCase(storeType)) {
             String collectionName = env.getProperty("solr.collection.name");
             String zkHosts = env.getProperty("solr.zk.hosts");
-            return SolrEmbeddingStore.builder().setCollectionName(collectionName).setZkHosts(Collections.singletonList(zkHosts)).build();
+            String zkChroot = env.getProperty("solr.zk.chroot");
+            return SolrEmbeddingStore.builder().setCollectionName(collectionName).setZkHosts(Collections.singletonList(zkHosts)).setZkChroot(zkChroot).build();
         } else {
             throw new IllegalArgumentException("Unsupported chat model type: " + storeType);
         }

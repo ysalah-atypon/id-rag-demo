@@ -27,7 +27,7 @@ public class EmbeddingModelFactoryBean implements FactoryBean<EmbeddingModel> {
                     .build();
         } else if("mistral".equalsIgnoreCase(modelType)){
             return  MistralAiEmbeddingModel.builder()
-                    .apiKey("sNn7geRh7ufcwm6jgW14ZYhSWOVqvY3S")
+                    .apiKey(env.getProperty("mistral.embedding.api-key"))
                     .modelName("mistral-embed")
                     .build();
 
