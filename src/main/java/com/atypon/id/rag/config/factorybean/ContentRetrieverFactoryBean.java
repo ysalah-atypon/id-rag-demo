@@ -5,17 +5,21 @@ import dev.langchain4j.rag.content.retriever.ContentRetriever;
 import dev.langchain4j.rag.content.retriever.EmbeddingStoreContentRetriever;
 import dev.langchain4j.store.embedding.EmbeddingStore;
 import org.springframework.beans.factory.FactoryBean;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 @Component
 public class ContentRetrieverFactoryBean implements FactoryBean<ContentRetriever> {
 
 
-    @Autowired
-    private EmbeddingStore embeddingStore;
-    @Autowired
-    private EmbeddingModel embeddingModel;
+    private final EmbeddingStore embeddingStore;
+    private final EmbeddingModel embeddingModel;
+
+    @Lazy
+    public ContentRetrieverFactoryBean(EmbeddingStore embeddingStore, EmbeddingModel embeddingModel) {
+        this.embeddingStore = embeddingStore;
+        this.embeddingModel = embeddingModel;
+    }
 
     @Override
     public ContentRetriever getObject() throws Exception {

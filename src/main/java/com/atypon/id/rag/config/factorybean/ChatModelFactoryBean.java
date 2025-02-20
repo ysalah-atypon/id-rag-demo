@@ -1,10 +1,10 @@
 package com.atypon.id.rag.config.factorybean;
 
 import dev.langchain4j.model.chat.ChatLanguageModel;
+import dev.langchain4j.model.googleai.GoogleAiGeminiChatModel;
 import dev.langchain4j.model.ollama.OllamaChatModel;
 import dev.langchain4j.model.openai.OpenAiChatModel;
 import org.springframework.beans.factory.FactoryBean;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
@@ -12,8 +12,11 @@ import org.springframework.stereotype.Component;
 public class ChatModelFactoryBean implements FactoryBean<ChatLanguageModel> {
 
 
-    @Autowired
-    private Environment env;
+    private final Environment env;
+
+    public ChatModelFactoryBean(Environment env) {
+        this.env = env;
+    }
 
     @Override
     public ChatLanguageModel getObject() throws Exception {
@@ -31,7 +34,14 @@ public class ChatModelFactoryBean implements FactoryBean<ChatLanguageModel> {
                     .modelName(env.getProperty("ollama.model.name"))
                     .temperature(Double.parseDouble(env.getProperty("ollama.temperature")))
                     .build();
-        } else {
+        } else if("gemini".equalsIgnoreCase(modelType)){
+            return GoogleAiGeminiChatModel.builder()
+                    .apiKey(env.getProperty("gemini.api-key"))
+                    .modelName(env.getProperty("gemini.model.name"))
+                    .logRequestsAndResponses(true).build();
+
+        }
+        else {
             throw new IllegalArgumentException("Unsupported chat model type: " + modelType);
         }
     }
