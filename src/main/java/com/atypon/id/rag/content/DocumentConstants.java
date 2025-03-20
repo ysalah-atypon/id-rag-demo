@@ -6,4 +6,7 @@ public interface DocumentConstants {
     String ID = "id";
     String TEXT = "text";
     String VECTOR = "vector";
+    String FULL_TEXT = "fulltext";
+    String TITLE = "title";
+    String AUTHORS = "authors";
 }

@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.Collections;
 
-@Component
+//@Component
 public class EmbeddingStoreFactoryBean implements FactoryBean<EmbeddingStore> {
 
     private final Environment env;
@@ -20,17 +20,7 @@ public class EmbeddingStoreFactoryBean implements FactoryBean<EmbeddingStore> {
 
     @Override
     public EmbeddingStore getObject() throws Exception {
-        String storeType = env.getProperty("embedding.store.type");
-        if ("memory".equalsIgnoreCase(storeType)) {
-            return new InMemoryEmbeddingStore<>();
-        } else if ("solr".equalsIgnoreCase(storeType)) {
-            String collectionName = env.getProperty("solr.collection.name");
-            String zkHosts = env.getProperty("solr.zk.hosts");
-            String zkChroot = env.getProperty("solr.zk.chroot");
-            return SolrEmbeddingStore.builder().setCollectionName(collectionName).setZkHosts(Collections.singletonList(zkHosts)).setZkChroot(zkChroot).build();
-        } else {
-            throw new IllegalArgumentException("Unsupported chat model type: " + storeType);
-        }
+        throw new IllegalArgumentException("Embedding is currently unsupported");
     }
 
     @Override

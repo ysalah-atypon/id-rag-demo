@@ -10,7 +10,7 @@ import org.springframework.beans.factory.FactoryBean;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
-@Component
+//@Component
 public class EmbeddingStoreIngestorFactoryBean implements FactoryBean<EmbeddingStoreIngestor> {
     private static final Logger logger = LoggerFactory.getLogger(EmbeddingStoreIngestorFactoryBean.class);
 
@@ -25,12 +25,7 @@ public class EmbeddingStoreIngestorFactoryBean implements FactoryBean<EmbeddingS
 
     @Override
     public EmbeddingStoreIngestor getObject() throws Exception {
-        logger.info("Creating EmbeddingStoreIngestor with embeddingStore: {} and embeddingModel: {}", embeddingStore, embeddingModel);
-        return EmbeddingStoreIngestor.builder()
-                .documentSplitter(DocumentSplitters.recursive(300, 0))
-                .embeddingModel(embeddingModel)
-                .embeddingStore(embeddingStore)
-                .build();
+        throw new IllegalArgumentException("Embedding is currently unsupported");
     }
 
     @Override

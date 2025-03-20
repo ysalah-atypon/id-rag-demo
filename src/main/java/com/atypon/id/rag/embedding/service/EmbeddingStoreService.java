@@ -7,7 +7,7 @@ import dev.langchain4j.store.embedding.EmbeddingStoreIngestor;
 import dev.langchain4j.store.embedding.IngestionResult;
 import org.springframework.stereotype.Service;
 
-@Service
+//@Service
 public class EmbeddingStoreService {
     private final EmbeddingStoreIngestor embeddingStoreIngestor;
 
