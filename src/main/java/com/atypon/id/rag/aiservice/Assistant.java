@@ -13,5 +13,5 @@ import static dev.langchain4j.service.spring.AiServiceWiringMode.EXPLICIT;
 public interface Assistant {
 
     @SystemMessage("You are a polite assistant")
-    Result chat(@MemoryId ChatMemoryID memoryId, @UserMessage String userMessage);
+    Result<String> chat(@MemoryId ChatMemoryID memoryId, @UserMessage String userMessage);
 }

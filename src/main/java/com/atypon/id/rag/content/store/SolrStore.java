@@ -19,21 +19,20 @@ import java.util.stream.Collectors;
 public class SolrStore implements ContentStore {
 
     private final SolrClient solrClient;
-    private final String collectionName = "JB";
-    private static final Logger log = LoggerFactory.getLogger(SolrStore.class);
+    private final String collectionName = "jb";
+    private static final Logger LOGGER = LoggerFactory.getLogger(SolrStore.class);
 
     public SolrStore(SolrClient solrClient) {
         this.solrClient = solrClient;
     }
 
     public List<Content> search(FullTextSearchRequest searchRequest) {
-        SolrQuery query = new SolrQuery("doi", searchRequest.doi());
-        //todo: set the needed fields from solr to be returned
-        query.setFields();
+//        SolrQuery query = new SolrQuery("DOI:"+ searchRequest.doi());
+        SolrQuery query = new SolrQuery("doi:" + searchRequest.doi());
+        query.setFields("Fulltext_en", "Title_en", "DOI");
 
         try {
             QueryResponse queryResponse = solrClient.query(collectionName, query);
-            assert queryResponse.getResults().size() == 1;
             return getContent(queryResponse.getResults());
         } catch (SolrServerException | IOException e) {
             //todo: better exception handling
@@ -42,10 +41,15 @@ public class SolrStore implements ContentStore {
     }
 
     private List<Content> getContent(SolrDocumentList results) {
-        return results.stream().map(result -> new FullTextDocument((String) result.get("fulltext"), "", "", new ArrayList<>())).collect(Collectors.toList());
+        return results.stream().map(result -> {
+            String doi = (String) result.get("DOI");
+            Optional<String> title = ((ArrayList<String>) result.get("Title_en")).stream().findFirst();
+            Optional<String> fulltext = ((ArrayList<String>) result.get("Fulltext_en")).stream().findFirst();
+            return new FullTextDocument(fulltext.orElse(""), doi, title.orElse(""), new ArrayList<>());
+        }).collect(Collectors.toList());
     }
 
-    public static SolrStoreBuilder builder(){
+    public static SolrStoreBuilder builder() {
         return new SolrStoreBuilder();
     }
 

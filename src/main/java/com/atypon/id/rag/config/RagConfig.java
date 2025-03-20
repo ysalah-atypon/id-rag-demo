@@ -10,10 +10,14 @@ import dev.langchain4j.model.chat.listener.ChatModelErrorContext;
 import dev.langchain4j.model.chat.listener.ChatModelListener;
 import dev.langchain4j.model.chat.listener.ChatModelRequestContext;
 import dev.langchain4j.model.chat.listener.ChatModelResponseContext;
+import dev.langchain4j.model.openai.OpenAiTokenizer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import static dev.langchain4j.model.openai.OpenAiChatModelName.GPT_4_O_MINI;
 
 @Configuration
 public class RagConfig {
@@ -32,6 +36,13 @@ public class RagConfig {
         return MessageWindowChatMemory.withMaxMessages(10);
     }
 
+
+    //todo: replace with your own tokenizer or with GeminiTokenizer
+    @Bean(name = "tokenizer")
+    @ConditionalOnMissingBean
+    Tokenizer tokenizer() {
+        return new OpenAiTokenizer(GPT_4_O_MINI.toString());
+    }
     @Bean(name = "chatModelListener")
     ChatModelListener chatModelListener() {
         return new ChatModelListener() {

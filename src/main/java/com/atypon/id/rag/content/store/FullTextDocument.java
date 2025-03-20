@@ -30,7 +30,6 @@ public record FullTextDocument(String fulltext,String doi, String title, List<St
 
     @Override
     public Map<ContentMetadata, Object> metadata() {
-
-        return null;
+        return Map.of();
     }
 }

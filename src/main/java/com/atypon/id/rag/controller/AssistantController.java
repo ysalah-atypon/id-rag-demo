@@ -16,9 +16,9 @@ public class AssistantController {
     }
 
 
-    @PostMapping("/assistant2")
-    public Result assistant2(@RequestParam(value = "question") String question, @RequestBody ChatMemoryID memoryID) {
-        return assistant.chat(memoryID, question);
+    @PostMapping("/assistant")
+    public String assistant(@RequestParam(value = "question") String question, @RequestBody ChatMemoryID memoryID) {
+        return assistant.chat(memoryID, question).content();
     }
 
 }
